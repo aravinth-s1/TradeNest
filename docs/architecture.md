@@ -12,17 +12,13 @@
 ## Multi-tenancy
 Single database, shared schema. Every tenant-owned table carries `organizationId`, and every query is filtered by the caller's `organizationId` taken from the JWT — never from request input.
 
-## Domain model
-- **Organization** — name, email domains, settings
-- **User** — belongs to one Organization, role `MEMBER | ADMIN`
-- **Listing** — `SELL` or `RENT`, category, price, rent unit, status, photos
-- **Order** — a sale of a listing (offer → accepted → completed)
-- **Booking** — a rental of a listing over a date range
-- **Message** — buyer/seller chat scoped to a listing
-- **Review** — rating after a completed order/booking
-- **Report** — flagged listing/user for admin moderation
+## Scope decisions
+- **Single organisation**: the deployment serves one organisation; each user belongs to exactly one.
+- **Marketplace only**: no payments, no escrow, no in-app chat. Buyers contact the seller directly (via the seller's contact note) and settle outside the app, so TradeNest carries no payment or transaction-dispute liability.
+- Prices and deposits are informational. Land and high-value assets are listings/enquiries, not title transfers.
 
-## Open questions
-- Payments: in-app (Stripe/Razorpay) vs. off-platform settlement for MVP?
-- Can one user belong to multiple organisations?
-- Legal/compliance for land and high-value assets (listing is an enquiry, not a title transfer)?
+## Domain model
+- **Organization** — name, email domains, invite code
+- **User** — belongs to the Organization, role `MEMBER | ADMIN`
+- **Listing** — `SELL` or `RENT`, category, price, rent unit, contact note, status, photos
+- **Report** (later) — flagged listing for admin moderation

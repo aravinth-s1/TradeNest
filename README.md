@@ -1,6 +1,8 @@
 # TradeNest
 
-An internal marketplace for organisations. Employees can **sell, rent or give away** anything they own — products, equipment, vehicles, land, space, services — to **colleagues in the same organisation**.
+An internal marketplace for organisations. Employees can **sell or rent** anything they own — products, equipment, vehicles, land, space, services — to **colleagues in the same organisation**.
+
+TradeNest is **only a marketplace**: it lists things and connects people. There are no in-app payments and no in-app chat — buyers contact the seller directly and settle outside the app.
 
 ## Core ideas
 
@@ -32,12 +34,11 @@ npm run dev                      # http://localhost:5173
 
 ## Roadmap (MVP)
 
-1. Auth: work-email signup, org join via domain / invite code
+1. Auth: work-email signup, join the organisation via domain / invite code
 2. Listings: create, browse, search, filter, photos
-3. Sell flow: offer → accept → mark sold
-4. Rent flow: availability calendar, booking request → approve → return
-5. In-app chat between buyer and seller
-6. Reviews and reporting; org admin moderation
-7. Push notifications
+3. Seller contact details shown to org members on each listing
+4. Seller marks listing as sold / rented / archived
+5. Report listing + admin moderation
+6. Push notifications (new listings, saved searches)
 
 See [docs/architecture.md](docs/architecture.md).
