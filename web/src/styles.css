@@ -1,0 +1,22 @@
+:root { --brand: #0f766e; --bg: #f6f8f8; --fg: #14211f; --card: #fff; --line: #dbe3e1; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0e1514; --fg: #e6efed; --card: #162120; --line: #263634; } }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+.app { max-width: 960px; margin: 0 auto; padding: 16px; }
+header { display: flex; justify-content: space-between; align-items: center; }
+h1 { color: var(--brand); margin: 0; }
+nav, .row, .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+input, select, textarea, button { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: inherit; }
+.filters input { flex: 1; min-width: 160px; }
+button { background: var(--brand); color: #fff; border-color: var(--brand); cursor: pointer; }
+button.ghost { background: transparent; color: inherit; border-color: var(--line); }
+button.active { background: var(--brand); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.card h3 { margin: 6px 0; } .card p { margin: 6px 0; }
+.price { font-weight: 700; color: var(--brand); } .price small { font-weight: 400; color: inherit; }
+.tag { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); }
+.tag.SELL { border-color: var(--brand); } .tag.RENT { border-color: #b45309; } .tag.muted { opacity: .6; }
+.meta { opacity: .7; font-size: 14px; } .contact { font-size: 14px; background: var(--bg); padding: 8px; border-radius: 8px; }
+.form { display: flex; flex-direction: column; gap: 10px; max-width: 520px; }
+.form textarea { min-height: 100px; } .err { color: #dc2626; }

@@ -26,11 +26,18 @@ docker compose up -d db          # PostgreSQL
 cd backend && npm install
 cp .env.example .env
 npx prisma migrate dev
+npm run db:seed                  # demo org, 2 users, 3 listings
 npm run dev                      # http://localhost:3000/health
 
 cd ../web && npm install
 npm run dev                      # http://localhost:5173
 ```
+
+## Status
+
+Core marketplace is working: create, browse, search, filter (type/category/price), paginate, and manage (mark sold/rented, archive, relist) listings, always scoped to the caller's organisation.
+
+**Temporary:** auth is a dev stub (`x-user-id` header, user picker in the UI). Real work-email signup is deferred until the core is done.
 
 ## Roadmap (MVP)
 
