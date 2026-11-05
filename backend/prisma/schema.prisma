@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum ListingType {
+  SELL
+  RENT
+}
+
+enum ListingCategory {
+  PRODUCT
+  LAND
+  VEHICLE
+  SPACE
+  SERVICE
+  OTHER
+}
+
+enum ListingStatus {
+  DRAFT
+  ACTIVE
+  RESERVED
+  SOLD
+  RENTED
+  ARCHIVED
+}
+
+enum RentUnit {
+  HOUR
+  DAY
+  WEEK
+  MONTH
+}
+
+enum OrderStatus {
+  OFFERED
+  ACCEPTED
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  REQUESTED
+  APPROVED
+  ACTIVE
+  RETURNED
+  CANCELLED
+}
+
+
+model Organization {
+  id        String    @id @default(cuid())
+  name      String
+  domains   String[]  // allowed email domains for auto-join
+  inviteCode String?  @unique
+  createdAt DateTime  @default(now())
+  users     User[]
+  listings  Listing[]
+}
+
+model User {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  email          String       @unique
+  name           String
+  passwordHash   String
+  role           Role         @default(MEMBER)
+  emailVerified  Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  listings       Listing[]
+  orders         Order[]
+  bookings       Booking[]
+  messagesSent   Message[]
+
+  @@index([organizationId])
+}
+
+model Listing {
+  id             String          @id @default(cuid())
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  sellerId       String
+  seller         User            @relation(fields: [sellerId], references: [id])
+  type           ListingType
+  category       ListingCategory
+  title          String
+  description    String
+  priceCents     Int
+  currency       String          @default("INR")
+  rentUnit       RentUnit?       // required when type = RENT
+  depositCents   Int?
+  location       String?
+  photos         String[]
+  status         ListingStatus   @default(DRAFT)
+  createdAt      DateTime        @default(now())
+  orders         Order[]
+  bookings       Booking[]
+  messages       Message[]
+
+  @@index([organizationId, status])
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  listingId  String
+  listing    Listing     @relation(fields: [listingId], references: [id])
+  buyerId    String
+  buyer      User        @relation(fields: [buyerId], references: [id])
+  offerCents Int
+  status     OrderStatus @default(OFFERED)
+  createdAt  DateTime    @default(now())
+}
+
+model Booking {
+  id        String        @id @default(cuid())
+  listingId String
+  listing   Listing       @relation(fields: [listingId], references: [id])
+  renterId  String
+  renter    User          @relation(fields: [renterId], references: [id])
+  startsAt  DateTime
+  endsAt    DateTime
+  status    BookingStatus @default(REQUESTED)
+  createdAt DateTime      @default(now())
+
+  @@index([listingId, startsAt, endsAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+}
